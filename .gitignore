@@ -1,0 +1,41 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ===== Virtual Environment =====
+venv/
+env/
+.venv/
+
+# ===== Environment Variables =====
+.env
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== Data Cache =====
+data/cache/
+
+# ===== OS Files =====
+.DS_Store
+Thumbs.db
+
+# ===== Distribution / Packaging =====
+dist/
+build/
+*.egg-info/
+*.egg
+
+# ===== Logs =====
+*.log
+
+# ===== Node =====
+node_modules/
+
+# ===== Data =====
+*.parquet

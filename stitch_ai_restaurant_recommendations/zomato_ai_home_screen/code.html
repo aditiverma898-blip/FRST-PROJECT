@@ -1,0 +1,420 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Zomato AI Recommendations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#71d7cf",
+                        "primary": "#b7122a",
+                        "on-tertiary-fixed": "#00201e",
+                        "inverse-on-surface": "#f3f0ef",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#eae7e7",
+                        "secondary-container": "#fcd400",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#00837c",
+                        "on-background": "#1b1b1b",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "outline": "#8f6f6e",
+                        "tertiary-fixed": "#8ef4eb",
+                        "primary-fixed-dim": "#ffb3b1",
+                        "on-surface": "#1b1b1b",
+                        "inverse-primary": "#ffb3b1",
+                        "on-surface-variant": "#5b403f",
+                        "background": "#fcf9f8",
+                        "tertiary": "#006762",
+                        "on-tertiary-fixed-variant": "#00504c",
+                        "on-secondary-fixed": "#221b00",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-secondary-container": "#6e5c00",
+                        "surface-container-low": "#f6f3f2",
+                        "on-secondary-fixed-variant": "#544600",
+                        "secondary": "#705d00",
+                        "surface-container": "#f0eded",
+                        "on-primary-fixed": "#410007",
+                        "on-primary-fixed-variant": "#92001c",
+                        "secondary-fixed": "#ffe16d",
+                        "on-tertiary-container": "#f3fffd",
+                        "surface": "#fcf9f8",
+                        "surface-dim": "#dcd9d9",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#bb162c",
+                        "surface-bright": "#fcf9f8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "on-primary-container": "#fffbff",
+                        "inverse-surface": "#313030",
+                        "primary-fixed": "#ffdad8",
+                        "secondary-fixed-dim": "#e9c400",
+                        "primary-container": "#db313f",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#e4bebc",
+                        "zomato-red": "#E23744"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "edge-margin": "32px",
+                        "edge-margin-mobile": "20px",
+                        "stack-md": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+        .ai-banner-gradient {
+            background: linear-gradient(to right, rgba(226, 55, 68, 0.05), transparent);
+        }
+        .metallic-gold {
+            background: linear-gradient(135deg, #FFDF00, #D4AF37);
+            color: #ffffff;
+        }
+        .metallic-silver {
+            background: linear-gradient(135deg, #E0E0E0, #C0C0C0);
+            color: #1b1b1b;
+        }
+        .metallic-bronze {
+            background: linear-gradient(135deg, #CD7F32, #A0522D);
+            color: #ffffff;
+        }
+        .card-shadow {
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.05);
+        }
+        .card-shadow:hover {
+            box-shadow: 0px 12px 30px rgba(0,0,0,0.08);
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface shadow-sm sticky top-0 w-full z-50 flex justify-between items-center px-edge-margin py-stack-md max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<img src="https://lh3.googleusercontent.com/aida/AP1WRLvbK7eP2LkB6whRhWlhcJyleAOJVQXUin2X6NMRODQMzga8ZQ2fgh0FLbUlgqACJFSId2OzIzhoojXwwDnZAtM9owvLzZUpr9V2GZJZh6N5qqL_DpWsiRe0J-p-dIrQzlGjeCzpSDeVgbnFtA6PqnbL_h9RjkAc_W-i0AWd5EMT2al6uwDE1DCuY8hyyah4hwszmUNCeKWI0TwJa4TiuTDYutbBZonwK-aSmGi7IGw3PL5IDZuhcPWFHSSM" alt="Zomato AI Logo" class="h-[40px] object-contain rounded-md">
+<div>
+<h1 class="text-headline-md font-headline-md font-bold text-primary">Zomato AI Recommendations</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Find your perfect restaurant</p>
+</div>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-primary border-b-2 border-primary pb-1 text-label-md font-label-md transition-colors duration-200" href="#">Explore</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 text-label-md font-label-md" href="#">Bookmarks</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 text-label-md font-label-md" href="#">History</a>
+</nav>
+<div class="flex items-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle" style="font-size: 28px;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Dismissible Server Error (UI State) -->
+<div class="hidden bg-error-container text-on-error-container px-edge-margin py-3 flex justify-between items-center max-w-container-max mx-auto w-full mt-2 rounded-lg" id="error-bar">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined">error</span>
+<span class="text-body-md font-body-md">Unable to connect to recommendation engine. Please try again.</span>
+</div>
+<button class="text-on-error-container hover:opacity-70" onclick="document.getElementById('error-bar').style.display='none'">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-[1200px] mx-auto px-edge-margin py-stack-lg grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Column: Preferences (40%) -->
+<div class="col-span-1 md:col-span-5 flex flex-col gap-6">
+<h2 class="text-headline-md font-headline-md text-on-surface mb-2">Your preferences</h2>
+<div class="bg-[#F8F8F8] border border-surface-dim rounded-xl p-6 flex flex-col gap-6">
+<!-- Location -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-2">Location</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-variant">location_on</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface border-2 border-error rounded-lg focus:outline-none focus:border-zomato-red transition-colors text-body-md font-body-md" placeholder="Search location" type="text" value="New Delhi">
+<p class="text-error text-label-sm font-label-sm mt-1">Please confirm a valid neighborhood.</p>
+</div>
+<div class="flex gap-2 mt-3">
+<button class="px-3 py-1 bg-surface-dim text-on-surface rounded-full text-label-sm font-label-sm border border-outline-variant hover:bg-surface-variant transition-colors">Mumbai</button>
+<button class="px-3 py-1 bg-on-surface text-surface rounded-full text-label-sm font-label-sm border border-on-surface transition-colors">New Delhi</button>
+</div>
+</div>
+<!-- Budget -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-2">Budget for two</label>
+<select class="w-full px-4 py-2 bg-surface border border-surface-dim rounded-lg focus:outline-none focus:border-zomato-red focus:ring-1 focus:ring-zomato-red transition-colors text-body-md font-body-md appearance-none">
+<option selected="" value="medium">Medium (₹501-1500)</option>
+<option value="low">Low (&lt;₹500)</option>
+<option value="high">High (&gt;₹1500)</option>
+</select>
+</div>
+<!-- Cuisine -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-2">Cuisine</label>
+<select class="w-full px-4 py-2 bg-surface border border-surface-dim rounded-lg focus:outline-none focus:border-zomato-red focus:ring-1 focus:ring-zomato-red transition-colors text-body-md font-body-md appearance-none">
+<option value="any">Any cuisine</option>
+<option value="italian">Italian</option>
+<option value="north_indian">North Indian</option>
+<option value="chinese">Chinese</option>
+</select>
+</div>
+<!-- Rating -->
+<div>
+<div class="flex justify-between mb-2">
+<label class="block text-label-md font-label-md text-on-surface">Minimum Rating</label>
+<span class="text-label-md font-label-md text-zomato-red font-bold">4.5</span>
+</div>
+<input class="w-full h-2 bg-surface-dim rounded-lg appearance-none cursor-pointer accent-zomato-red" max="5" min="0" step="0.1" type="range" value="4.5">
+<div class="flex justify-between mt-1 text-label-sm font-label-sm text-on-surface-variant">
+<span class="">0.0</span>
+<span class="">5.0</span>
+</div>
+</div>
+<!-- Open Text -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-2">Vibe &amp; specifics (Optional)</label>
+<textarea class="w-full px-4 py-2 bg-surface border border-surface-dim rounded-lg focus:outline-none focus:border-zomato-red focus:ring-1 focus:ring-zomato-red transition-colors text-body-md font-body-md resize-none" placeholder="e.g. family-friendly, quick service, quiet, romantic..." rows="3"></textarea>
+</div>
+<!-- Submit Action -->
+<button class="w-full bg-zomato-red text-white py-3 rounded-lg text-label-md font-label-md font-bold hover:bg-primary-container transition-colors mt-2 shadow-sm">
+                    Get Recommendations
+                </button>
+</div>
+</div>
+<!-- Right Column: Recommendations (60%) -->
+<div class="col-span-1 md:col-span-7 flex flex-col gap-6">
+<div class="flex flex-wrap items-center justify-between gap-4 mb-2">
+<h2 class="text-headline-md font-headline-md text-on-surface">Recommendations</h2>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-dim text-on-surface rounded-full text-label-sm font-label-sm border border-outline-variant flex items-center gap-1">New Delhi <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span></span>
+<span class="px-3 py-1 bg-surface-dim text-on-surface rounded-full text-label-sm font-label-sm border border-outline-variant flex items-center gap-1">₹501-1500 <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span></span>
+<span class="px-3 py-1 bg-surface-dim text-on-surface rounded-full text-label-sm font-label-sm border border-outline-variant flex items-center gap-1">Italian <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span></span>
+<span class="px-3 py-1 bg-surface-dim text-on-surface rounded-full text-label-sm font-label-sm border border-outline-variant flex items-center gap-1">4.5+ <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span></span>
+</div>
+</div>
+<!-- Warning Banner -->
+<div class="bg-secondary-container text-on-secondary-container px-4 py-3 rounded-lg flex items-center gap-3 shadow-sm mb-2">
+<span class="material-symbols-outlined">warning</span>
+<span class="text-body-md font-body-md text-sm">We relaxed your rating filter slightly to find better matches.</span>
+</div>
+<!-- AI Summary Banner -->
+<div class="ai-banner-gradient border border-outline-variant rounded-xl p-5 flex gap-4 items-start relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-9xl">auto_awesome</span>
+</div>
+<div class="text-zomato-red mt-1 shrink-0 z-10">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div class="z-10">
+<p class="text-body-md font-body-md text-on-surface italic text-lg leading-relaxed">
+                        "Based on your love for authentic pasta and quiet environments, these top picks offer the best experience in Delhi."
+                    </p>
+</div>
+</div>
+<!-- Restaurant List -->
+<div class="flex flex-col gap-5">
+<!-- Rank 1 -->
+<div class="bg-surface rounded-2xl p-6 card-shadow border border-surface-dim transition-all duration-300 flex flex-col md:flex-row gap-6 relative">
+<div class="absolute -left-3 -top-3 w-10 h-10 rounded-full metallic-gold flex items-center justify-center font-bold text-lg shadow-md border-2 border-white z-10">1</div>
+<div class="w-full md:w-1/3 h-48 md:h-auto rounded-lg overflow-hidden bg-surface-dim shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A beautifully plated dish of handmade fettuccine pasta in a creamy white sauce, garnished with fresh herbs and cracked black pepper. The setting is an upscale, dimly lit restaurant with warm, inviting ambient lighting. The aesthetic is premium food photography, focusing on texture and rich, warm tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1Bw2zE8fZTyk1uofEjLroC3_Kx2KxH7_8k5iTdsxaoMUJNE2xxIQw8j7WOdOAd_gLHkFeE86SelOd4kk_UzrqhSiMpVNsjsrx8pdaaKWGMBSIHoPyr2eDAx-PMPyYCzPhrB_rhmrjdCZRsnjLribFaGVjDQqUoQzCGQ9VPUXXvq7rxdokH3pTvph8484SyDqS5oJ8-gYQM7A8zca9qr4ptJ3BGBqiyWQocZeYJAEj9fztOTWV-IaxnS6P7c6LTRnGDEQ_0bUqcTvE">
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-headline-md font-headline-md text-on-surface">The Pasta Bowl Company</h3>
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded text-label-sm font-label-sm font-bold">
+<span class="text-zomato-red material-symbols-outlined text-[16px]" data-weight="fill">star</span> 4.8
+                                </div>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-2">Italian • Casual Dining</p>
+<p class="text-label-md font-label-md text-on-surface-variant mb-4">₹1,200 for two (approx.)</p>
+</div>
+<div class="bg-[#F8F8F8] p-3 rounded-lg flex items-start gap-2 border border-surface-dim">
+<span class="material-symbols-outlined text-zomato-red text-[20px] mt-0.5">insights</span>
+<p class="text-label-sm font-label-sm text-on-surface text-sm">
+<span class="font-bold">AI Pick:</span> Highly praised for their handmade fettuccine and intimate lighting, perfect for your preference for quiet spots.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Rank 2 -->
+<div class="bg-surface rounded-2xl p-6 card-shadow border border-surface-dim transition-all duration-300 flex flex-col md:flex-row gap-6 relative">
+<div class="absolute -left-3 -top-3 w-10 h-10 rounded-full metallic-silver flex items-center justify-center font-bold text-lg shadow-md border-2 border-white z-10">2</div>
+<div class="w-full md:w-1/3 h-48 md:h-auto rounded-lg overflow-hidden bg-surface-dim shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A rustic wood-fired pizza with blistered crust, fresh mozzarella, and vibrant basil leaves, resting on a wooden board. The scene is set in a modern, slightly rustic Italian eatery in New Delhi with warm, soft string lights in the background. High-resolution, professional food photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGx2pWoe4C4A7RotxQunbSHeG-5iw_uKNMEToOprtBsbmIKgpfAOUVgGXiBWiqW9FO5Rsa7WA3z1uvDhHEmnvOZQ4KHOKfE2PiubOnJzT14vm_jdRiRSXql061MR5gpy9Qw-922UUvHyt1jMQrNGpN_jRAcL4UfHuixjipc-R7-6oTziVv5H97OySJUChMwQfUEHhjbzw1Dxx_aYzpr_GOWBnv1GsfI88fdmQvg2jIDT1jHegabn4QR3S5uCIX084nZQ9BULADhUqD">
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-headline-md font-headline-md text-on-surface">Artusi Ristorante</h3>
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded text-label-sm font-label-sm font-bold">
+<span class="text-zomato-red material-symbols-outlined text-[16px]" data-weight="fill">star</span> 4.7
+                                </div>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-2">Italian • Fine Dining</p>
+<p class="text-label-md font-label-md text-on-surface-variant mb-4">₹1,500 for two (approx.)</p>
+</div>
+<div class="bg-[#F8F8F8] p-3 rounded-lg flex items-start gap-2 border border-surface-dim">
+<span class="material-symbols-outlined text-zomato-red text-[20px] mt-0.5">insights</span>
+<p class="text-label-sm font-label-sm text-on-surface text-sm">
+<span class="font-bold">AI Pick:</span> Renowned for authentic Emilia-Romagna region dishes; exceptional service levels noted in reviews.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Loading State (Hidden by default, shown for demonstration) -->
+<div class="hidden bg-surface rounded-2xl p-6 border border-surface-dim animate-pulse flex flex-col md:flex-row gap-6">
+<div class="w-full md:w-1/3 h-48 md:h-auto rounded-lg bg-surface-variant shrink-0"></div>
+<div class="flex-grow flex flex-col justify-between py-2">
+<div>
+<div class="h-6 bg-surface-variant rounded w-3/4 mb-3"></div>
+<div class="h-4 bg-surface-variant rounded w-1/2 mb-2"></div>
+<div class="h-4 bg-surface-variant rounded w-1/3 mb-6"></div>
+</div>
+<div class="h-16 bg-surface-variant rounded w-full flex items-center justify-center">
+<span class="text-on-surface-variant text-label-sm font-label-sm">AI is ranking restaurants for you...</span>
+</div>
+</div>
+</div>
+<!-- Empty State (Hidden by default) -->
+<div class="hidden flex flex-col items-center justify-center py-12 text-center">
+<span class="material-symbols-outlined text-6xl text-surface-dim mb-4">travel_explore</span>
+<h3 class="text-headline-md font-headline-md text-on-surface mb-2">Your top picks will appear here</h3>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-sm">Adjust your preferences on the left and tap 'Get Recommendations' to discover your next great meal.</p>
+</div>
+<!-- Rank 3 -->
+<div class="bg-surface rounded-2xl p-6 card-shadow border border-surface-dim transition-all duration-300 flex flex-col md:flex-row gap-6 relative">
+    <div class="absolute -left-3 -top-3 w-10 h-10 rounded-full metallic-bronze flex items-center justify-center font-bold text-lg shadow-md border-2 border-white z-10">3</div>
+    <div class="w-full md:w-1/3 h-48 md:h-auto rounded-lg overflow-hidden bg-surface-dim shrink-0 relative">
+        <img class="w-full h-full object-cover" alt="Dakshin Restaurant Interior" src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&amp;fit=crop&amp;q=80&amp;w=800">
+    </div>
+    <div class="flex-grow flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-start mb-1">
+                <h3 class="text-headline-md font-headline-md text-on-surface">Dakshin</h3>
+                <div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded text-label-sm font-label-sm font-bold">
+                    <span class="text-zomato-red material-symbols-outlined text-[16px]" data-weight="fill">star</span> 4.8
+                </div>
+            </div>
+            <p class="text-body-md font-body-md text-on-surface-variant mb-2">South Indian • Fine Dining</p>
+            <p class="text-label-md font-label-md text-on-surface-variant mb-4">₹2,500 for two (approx.)</p>
+        </div>
+        <div class="bg-[#F8F8F8] p-3 rounded-lg flex items-start gap-2 border border-surface-dim">
+            <span class="material-symbols-outlined text-zomato-red text-[20px] mt-0.5">insights</span>
+            <p class="text-label-sm font-label-sm text-on-surface text-sm">
+                <span class="font-bold">AI Pick:</span> Unmatched for authentic coastal flavors and traditional ambiance.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- Rank 4 -->
+<div class="bg-surface rounded-2xl p-6 card-shadow border border-surface-dim transition-all duration-300 flex flex-col md:flex-row gap-6 relative">
+    <div class="absolute -left-3 -top-3 w-10 h-10 rounded-full bg-surface-dim flex items-center justify-center font-bold text-lg shadow-md border-2 border-white z-10">4</div>
+    <div class="w-full md:w-1/3 h-48 md:h-auto rounded-lg overflow-hidden bg-surface-dim shrink-0 relative">
+        <img class="w-full h-full object-cover" alt="Leo's Pizzeria Pizza" src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&amp;fit=crop&amp;q=80&amp;w=800">
+    </div>
+    <div class="flex-grow flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-start mb-1">
+                <h3 class="text-headline-md font-headline-md text-on-surface">Leo's Pizzeria</h3>
+                <div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded text-label-sm font-label-sm font-bold">
+                    <span class="text-zomato-red material-symbols-outlined text-[16px]" data-weight="fill">star</span> 4.6
+                </div>
+            </div>
+            <p class="text-body-md font-body-md text-on-surface-variant mb-2">Italian • Casual</p>
+            <p class="text-label-md font-label-md text-on-surface-variant mb-4">₹1,000 for two (approx.)</p>
+        </div>
+        <div class="bg-[#F8F8F8] p-3 rounded-lg flex items-start gap-2 border border-surface-dim">
+            <span class="material-symbols-outlined text-zomato-red text-[20px] mt-0.5">insights</span>
+            <p class="text-label-sm font-label-sm text-on-surface text-sm">
+                <span class="font-bold">AI Pick:</span> Best artisanal sourdough crust in the city, perfect for a relaxed dinner.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- Rank 5 -->
+<div class="bg-surface rounded-2xl p-6 card-shadow border border-surface-dim transition-all duration-300 flex flex-col md:flex-row gap-6 relative">
+    <div class="absolute -left-3 -top-3 w-10 h-10 rounded-full bg-surface-dim flex items-center justify-center font-bold text-lg shadow-md border-2 border-white z-10">5</div>
+    <div class="w-full md:w-1/3 h-48 md:h-auto rounded-lg overflow-hidden bg-surface-dim shrink-0 relative">
+        <img class="w-full h-full object-cover" alt="Mamagoto Asian Fusion" src="https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&amp;fit=crop&amp;q=80&amp;w=800">
+    </div>
+    <div class="flex-grow flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-start mb-1">
+                <h3 class="text-headline-md font-headline-md text-on-surface">Mamagoto</h3>
+                <div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded text-label-sm font-label-sm font-bold">
+                    <span class="text-zomato-red material-symbols-outlined text-[16px]" data-weight="fill">star</span> 4.4
+                </div>
+            </div>
+            <p class="text-body-md font-body-md text-on-surface-variant mb-2">Asian • Casual Dining</p>
+            <p class="text-label-md font-label-md text-on-surface-variant mb-4">₹1,800 for two (approx.)</p>
+        </div>
+        <div class="bg-[#F8F8F8] p-3 rounded-lg flex items-start gap-2 border border-surface-dim">
+            <span class="material-symbols-outlined text-zomato-red text-[20px] mt-0.5">insights</span>
+            <p class="text-label-sm font-label-sm text-on-surface text-sm">
+                <span class="font-bold">AI Pick:</span> Vibrant atmosphere with consistently great fusion dishes.
+            </p>
+        </div>
+    </div>
+</div></div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg flex flex-col items-center gap-stack-md border-t border-outline-variant bg-surface-container-low mt-auto">
+<div class="text-label-md font-label-md font-bold text-on-surface">Zomato AI Recommendations</div>
+<div class="flex gap-4">
+<a class="text-on-surface-variant text-label-sm font-label-sm hover:text-primary transition-all" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant text-label-sm font-label-sm hover:text-primary transition-all" href="#">Terms of Service</a>
+<a class="text-on-surface-variant text-label-sm font-label-sm hover:text-primary transition-all" href="#">Help Center</a>
+</div>
+<div class="text-on-surface-variant text-label-sm font-label-sm">© 2024 Zomato AI Recommendations. Powered by Culinary Intelligence.</div>
+</footer>
+
+
+
+
+
+
+</body></html>

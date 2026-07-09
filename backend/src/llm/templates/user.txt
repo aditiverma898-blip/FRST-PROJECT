@@ -1,0 +1,13 @@
+I am looking for restaurant recommendations with the following preferences:
+
+📍 Location: {city}
+💰 Budget: {budget}
+🍽️ Cuisine preference: {cuisines}
+⭐ Minimum rating: {min_rating}
+📝 Additional preferences: {additional_preferences}
+
+Here are the available restaurants that match my criteria:
+
+{restaurant_table}
+
+Based on these options and my preferences, please recommend up to 5 best restaurants FOR ME FROM THIS EXACT LIST. Do not include any restaurants not listed above. For each recommendation, explain why it's a great fit for my specific needs.
