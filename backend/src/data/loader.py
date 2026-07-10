@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 DATASET_NAME = "ManikaSaini/zomato-restaurant-recommendation"
 CACHE_DIR = Path(os.getenv("DATASET_CACHE_DIR", "./data/cache"))
-CACHE_FILE = CACHE_DIR / "zomato_processed.parquet"
+CACHE_FILE = CACHE_DIR / "zomato_processed_lite.parquet"
 
 # ──────────────────────────────────────────────────────────────
 #  Internal helpers
@@ -46,6 +46,13 @@ def load_from_huggingface() -> pd.DataFrame:
             df = dataset[split_name].to_pandas()
         else:
             df = dataset.to_pandas()
+
+        # Railway's free tier has a 500MB RAM limit.
+        # The full dataset consumes ~540MB in memory, causing OOM crashes.
+        # We sample 10,000 rows to ensure memory usage stays well below the limit.
+        if len(df) > 10000:
+            logger.info(f"Sampling 10,000 rows from dataset to prevent OOM (original size: {len(df)})")
+            df = df.sample(n=10000, random_state=42).reset_index(drop=True)
 
         logger.info("Downloaded %d rows from Hugging Face.", len(df))
         return df
