@@ -18,13 +18,11 @@ We will deploy the Python/FastAPI backend on [Railway.app](https://railway.app/)
 3. **Configure Service Settings:**
    Once the service is created, go to the **Settings** tab for that service.
    - **Root Directory:** Set this to `/backend`. This tells Railway to ignore the frontend and only install `requirements.txt` from the backend directory.
-   - **Start Command:** Set the custom start command to:
-     ```bash
-     cd src && uvicorn api.app:app --host 0.0.0.0 --port $PORT
-     ```
+   - The start command is already configured automatically by the `railway.toml` file located in the backend directory!
 4. **Environment Variables:**
    Go to the **Variables** tab and add the necessary environment variables:
    - `GROQ_API_KEY`: Your Groq LLM API Key (required for AI features).
+   - `CORS_ORIGINS`: The URL of your Vercel frontend (e.g., `https://zomato-ai-frontend.vercel.app`). *Note: you will get this URL after deploying the frontend on Vercel. Once you have it, add it here in Railway to allow your frontend to communicate with your backend.*
 5. **Generate a Public URL:**
    Go to the **Settings** tab, scroll to **Networking**, and click **"Generate Domain"**. 
    > **Important:** Save this URL. You will need it for the frontend configuration.
