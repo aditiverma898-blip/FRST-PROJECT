@@ -1,4 +1,5 @@
 import os
+import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,12 +20,15 @@ app_state = {"df": None}
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    logger.info("Loading Zomato dataset...")
-    try:
-        app_state["df"] = load_dataset()
-        logger.info(f"Dataset loaded with {len(app_state['df'])} records.")
-    except Exception as e:
-        logger.error(f"Failed to load dataset: {e}")
+    logger.info("Starting background task to load Zomato dataset...")
+    def _load():
+        try:
+            app_state["df"] = load_dataset()
+            logger.info(f"Dataset loaded with {len(app_state['df'])} records.")
+        except Exception as e:
+            logger.error(f"Failed to load dataset: {e}")
+            
+    asyncio.get_event_loop().run_in_executor(None, _load)
     yield
     # Shutdown
     app_state["df"] = None
@@ -53,6 +57,10 @@ def create_app() -> FastAPI:
 
     # Routes
     app.include_router(router, prefix="/api/v1")
+
+    @app.get("/")
+    async def root():
+        return {"status": "ok", "message": "Zomato AI API is running"}
 
     return app
 
