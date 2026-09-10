@@ -6,9 +6,15 @@ export async function fetchMetadata() {
       fetch(`${API_BASE}/locations`),
       fetch(`${API_BASE}/cuisines`)
     ]);
+    
+    if (!locationsRes.ok || !cuisinesRes.ok) {
+      console.warn("Backend not ready or returned error");
+      return { locations: [], cuisines: [] };
+    }
+
     const locations = await locationsRes.json();
     const cuisines = await cuisinesRes.json();
-    return { locations, cuisines };
+    return { locations: Array.isArray(locations) ? locations : [], cuisines: Array.isArray(cuisines) ? cuisines : [] };
   } catch (error) {
     console.error("Error fetching metadata:", error);
     return { locations: [], cuisines: [] };
