@@ -15,7 +15,7 @@ class LLMConfig:
 
     def __init__(self) -> None:
         self.api_key: str = os.getenv("GROQ_API_KEY", "")
-        self.model: str = os.getenv("LLM_MODEL", "llama3-70b-8192")
+        self.model: str = os.getenv("LLM_MODEL", "openai/gpt-oss-120b")
         self.temperature: float = float(os.getenv("LLM_TEMPERATURE", "0.7"))
         self.max_tokens: int = int(os.getenv("LLM_MAX_TOKENS", "1024"))
         self.top_p: float = float(os.getenv("LLM_TOP_P", "0.9"))
